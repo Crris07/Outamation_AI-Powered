@@ -1,0 +1,661 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOBFW2jWnaWp2ULghDhbirz",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Crris07/Outamation_AI-Powered/blob/main/pymupdf%20pypdf2%20pdfplumber\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "4N6wi96jQR-I",
+        "outputId": "08fdbc21-9088-4f26-f91d-802a6cb9527e"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Collecting pymupdf\n",
+            "  Downloading pymupdf-1.27.2.2-cp310-abi3-manylinux_2_28_x86_64.whl.metadata (3.4 kB)\n",
+            "Collecting pypdf2\n",
+            "  Downloading pypdf2-3.0.1-py3-none-any.whl.metadata (6.8 kB)\n",
+            "Collecting pdfplumber\n",
+            "  Downloading pdfplumber-0.11.9-py3-none-any.whl.metadata (43 kB)\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m43.6/43.6 kB\u001b[0m \u001b[31m1.4 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hCollecting pdfminer.six==20251230 (from pdfplumber)\n",
+            "  Downloading pdfminer_six-20251230-py3-none-any.whl.metadata (4.3 kB)\n",
+            "Requirement already satisfied: Pillow>=9.1 in /usr/local/lib/python3.12/dist-packages (from pdfplumber) (11.3.0)\n",
+            "Collecting pypdfium2>=4.18.0 (from pdfplumber)\n",
+            "  Downloading pypdfium2-5.7.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (67 kB)\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m67.9/67.9 kB\u001b[0m \u001b[31m3.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hRequirement already satisfied: charset-normalizer>=2.0.0 in /usr/local/lib/python3.12/dist-packages (from pdfminer.six==20251230->pdfplumber) (3.4.6)\n",
+            "Requirement already satisfied: cryptography>=36.0.0 in /usr/local/lib/python3.12/dist-packages (from pdfminer.six==20251230->pdfplumber) (43.0.3)\n",
+            "Requirement already satisfied: cffi>=1.12 in /usr/local/lib/python3.12/dist-packages (from cryptography>=36.0.0->pdfminer.six==20251230->pdfplumber) (2.0.0)\n",
+            "Requirement already satisfied: pycparser in /usr/local/lib/python3.12/dist-packages (from cffi>=1.12->cryptography>=36.0.0->pdfminer.six==20251230->pdfplumber) (3.0)\n",
+            "Downloading pymupdf-1.27.2.2-cp310-abi3-manylinux_2_28_x86_64.whl (24.9 MB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m24.9/24.9 MB\u001b[0m \u001b[31m66.7 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hDownloading pypdf2-3.0.1-py3-none-any.whl (232 kB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m232.6/232.6 kB\u001b[0m \u001b[31m19.3 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hDownloading pdfplumber-0.11.9-py3-none-any.whl (60 kB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m60.0/60.0 kB\u001b[0m \u001b[31m4.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hDownloading pdfminer_six-20251230-py3-none-any.whl (6.6 MB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m6.6/6.6 MB\u001b[0m \u001b[31m90.2 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hDownloading pypdfium2-5.7.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.6 MB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m3.6/3.6 MB\u001b[0m \u001b[31m86.7 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hInstalling collected packages: pypdfium2, pypdf2, pymupdf, pdfminer.six, pdfplumber\n",
+            "Successfully installed pdfminer.six-20251230 pdfplumber-0.11.9 pymupdf-1.27.2.2 pypdf2-3.0.1 pypdfium2-5.7.0\n"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install pymupdf pypdf2 pdfplumber\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from google.colab import files\n",
+        "uploaded = files.upload()\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 73
+        },
+        "id": "Vvi57igiQmYZ",
+        "outputId": "2d918aee-0347-421f-8c42-143f01da416a"
+      },
+      "execution_count": 2,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.HTML object>"
+            ],
+            "text/html": [
+              "\n",
+              "     <input type=\"file\" id=\"files-da99c88b-9457-41d1-a96c-2f3eb20416fe\" name=\"files[]\" multiple disabled\n",
+              "        style=\"border:none\" />\n",
+              "     <output id=\"result-da99c88b-9457-41d1-a96c-2f3eb20416fe\">\n",
+              "      Upload widget is only available when the cell has been executed in the\n",
+              "      current browser session. Please rerun this cell to enable.\n",
+              "      </output>\n",
+              "      <script>// Copyright 2017 Google LLC\n",
+              "//\n",
+              "// Licensed under the Apache License, Version 2.0 (the \"License\");\n",
+              "// you may not use this file except in compliance with the License.\n",
+              "// You may obtain a copy of the License at\n",
+              "//\n",
+              "//      http://www.apache.org/licenses/LICENSE-2.0\n",
+              "//\n",
+              "// Unless required by applicable law or agreed to in writing, software\n",
+              "// distributed under the License is distributed on an \"AS IS\" BASIS,\n",
+              "// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n",
+              "// See the License for the specific language governing permissions and\n",
+              "// limitations under the License.\n",
+              "\n",
+              "/**\n",
+              " * @fileoverview Helpers for google.colab Python module.\n",
+              " */\n",
+              "(function(scope) {\n",
+              "function span(text, styleAttributes = {}) {\n",
+              "  const element = document.createElement('span');\n",
+              "  element.textContent = text;\n",
+              "  for (const key of Object.keys(styleAttributes)) {\n",
+              "    element.style[key] = styleAttributes[key];\n",
+              "  }\n",
+              "  return element;\n",
+              "}\n",
+              "\n",
+              "// Max number of bytes which will be uploaded at a time.\n",
+              "const MAX_PAYLOAD_SIZE = 100 * 1024;\n",
+              "\n",
+              "function _uploadFiles(inputId, outputId) {\n",
+              "  const steps = uploadFilesStep(inputId, outputId);\n",
+              "  const outputElement = document.getElementById(outputId);\n",
+              "  // Cache steps on the outputElement to make it available for the next call\n",
+              "  // to uploadFilesContinue from Python.\n",
+              "  outputElement.steps = steps;\n",
+              "\n",
+              "  return _uploadFilesContinue(outputId);\n",
+              "}\n",
+              "\n",
+              "// This is roughly an async generator (not supported in the browser yet),\n",
+              "// where there are multiple asynchronous steps and the Python side is going\n",
+              "// to poll for completion of each step.\n",
+              "// This uses a Promise to block the python side on completion of each step,\n",
+              "// then passes the result of the previous step as the input to the next step.\n",
+              "function _uploadFilesContinue(outputId) {\n",
+              "  const outputElement = document.getElementById(outputId);\n",
+              "  const steps = outputElement.steps;\n",
+              "\n",
+              "  const next = steps.next(outputElement.lastPromiseValue);\n",
+              "  return Promise.resolve(next.value.promise).then((value) => {\n",
+              "    // Cache the last promise value to make it available to the next\n",
+              "    // step of the generator.\n",
+              "    outputElement.lastPromiseValue = value;\n",
+              "    return next.value.response;\n",
+              "  });\n",
+              "}\n",
+              "\n",
+              "/**\n",
+              " * Generator function which is called between each async step of the upload\n",
+              " * process.\n",
+              " * @param {string} inputId Element ID of the input file picker element.\n",
+              " * @param {string} outputId Element ID of the output display.\n",
+              " * @return {!Iterable<!Object>} Iterable of next steps.\n",
+              " */\n",
+              "function* uploadFilesStep(inputId, outputId) {\n",
+              "  const inputElement = document.getElementById(inputId);\n",
+              "  inputElement.disabled = false;\n",
+              "\n",
+              "  const outputElement = document.getElementById(outputId);\n",
+              "  outputElement.innerHTML = '';\n",
+              "\n",
+              "  const pickedPromise = new Promise((resolve) => {\n",
+              "    inputElement.addEventListener('change', (e) => {\n",
+              "      resolve(e.target.files);\n",
+              "    });\n",
+              "  });\n",
+              "\n",
+              "  const cancel = document.createElement('button');\n",
+              "  inputElement.parentElement.appendChild(cancel);\n",
+              "  cancel.textContent = 'Cancel upload';\n",
+              "  const cancelPromise = new Promise((resolve) => {\n",
+              "    cancel.onclick = () => {\n",
+              "      resolve(null);\n",
+              "    };\n",
+              "  });\n",
+              "\n",
+              "  // Wait for the user to pick the files.\n",
+              "  const files = yield {\n",
+              "    promise: Promise.race([pickedPromise, cancelPromise]),\n",
+              "    response: {\n",
+              "      action: 'starting',\n",
+              "    }\n",
+              "  };\n",
+              "\n",
+              "  cancel.remove();\n",
+              "\n",
+              "  // Disable the input element since further picks are not allowed.\n",
+              "  inputElement.disabled = true;\n",
+              "\n",
+              "  if (!files) {\n",
+              "    return {\n",
+              "      response: {\n",
+              "        action: 'complete',\n",
+              "      }\n",
+              "    };\n",
+              "  }\n",
+              "\n",
+              "  for (const file of files) {\n",
+              "    const li = document.createElement('li');\n",
+              "    li.append(span(file.name, {fontWeight: 'bold'}));\n",
+              "    li.append(span(\n",
+              "        `(${file.type || 'n/a'}) - ${file.size} bytes, ` +\n",
+              "        `last modified: ${\n",
+              "            file.lastModifiedDate ? file.lastModifiedDate.toLocaleDateString() :\n",
+              "                                    'n/a'} - `));\n",
+              "    const percent = span('0% done');\n",
+              "    li.appendChild(percent);\n",
+              "\n",
+              "    outputElement.appendChild(li);\n",
+              "\n",
+              "    const fileDataPromise = new Promise((resolve) => {\n",
+              "      const reader = new FileReader();\n",
+              "      reader.onload = (e) => {\n",
+              "        resolve(e.target.result);\n",
+              "      };\n",
+              "      reader.readAsArrayBuffer(file);\n",
+              "    });\n",
+              "    // Wait for the data to be ready.\n",
+              "    let fileData = yield {\n",
+              "      promise: fileDataPromise,\n",
+              "      response: {\n",
+              "        action: 'continue',\n",
+              "      }\n",
+              "    };\n",
+              "\n",
+              "    // Use a chunked sending to avoid message size limits. See b/62115660.\n",
+              "    let position = 0;\n",
+              "    do {\n",
+              "      const length = Math.min(fileData.byteLength - position, MAX_PAYLOAD_SIZE);\n",
+              "      const chunk = new Uint8Array(fileData, position, length);\n",
+              "      position += length;\n",
+              "\n",
+              "      const base64 = btoa(String.fromCharCode.apply(null, chunk));\n",
+              "      yield {\n",
+              "        response: {\n",
+              "          action: 'append',\n",
+              "          file: file.name,\n",
+              "          data: base64,\n",
+              "        },\n",
+              "      };\n",
+              "\n",
+              "      let percentDone = fileData.byteLength === 0 ?\n",
+              "          100 :\n",
+              "          Math.round((position / fileData.byteLength) * 100);\n",
+              "      percent.textContent = `${percentDone}% done`;\n",
+              "\n",
+              "    } while (position < fileData.byteLength);\n",
+              "  }\n",
+              "\n",
+              "  // All done.\n",
+              "  yield {\n",
+              "    response: {\n",
+              "      action: 'complete',\n",
+              "    }\n",
+              "  };\n",
+              "}\n",
+              "\n",
+              "scope.google = scope.google || {};\n",
+              "scope.google.colab = scope.google.colab || {};\n",
+              "scope.google.colab._files = {\n",
+              "  _uploadFiles,\n",
+              "  _uploadFilesContinue,\n",
+              "};\n",
+              "})(self);\n",
+              "</script> "
+            ]
+          },
+          "metadata": {}
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Saving sample_title_report.pdf to sample_title_report.pdf\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import os\n",
+        "print(os.listdir())"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "f9JceYgGSMBk",
+        "outputId": "2c3649ea-fc35-40cf-c747-3bba9e7dfdd8"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "['.config', 'sample_title_report.pdf', 'sample_data']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from PyPDF2 import PdfReader\n",
+        "\n",
+        "reader = PdfReader('sample_title_report.pdf')\n",
+        "print(len(reader.pages))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "MaNxa_65ShoP",
+        "outputId": "3d04c7ec-3046-457f-e56f-f9239d54ae91"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "30\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "page = reader.pages[2]\n",
+        "print(page.extract_text())"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "68RNMAk6Txs0",
+        "outputId": "d1c1d9e6-d8fd-4b93-c096-603c01c7a311"
+      },
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "PRELIMINARY REPORT Ticor  Title Company of  California \n",
+            "YOUR REFERENCE:   First Street ORDER NO.:  CYTEST- 995-\n",
+            "CLTA Preliminary Report Form – Modified (11/17/06) Page 3EXHIBIT “A”\n",
+            "LEGAL DESCRIPTION\n",
+            "THE LAND REFERRED  TO HEREIN BELOW  IS SITUATED IN THE COUNTY OF SAN DIEGO, STATE OF \n",
+            "CALIFORNIA, AND IS DESCRIBED AS FOLLOWS:\n",
+            "Parcel No 1:\n",
+            "Lot 58 of Villa Barbados North  Unit No. 1, in the City of San Diego, County of San Diego, State of California, according to \n",
+            "the Map thereof no. 7236, filed in the  Office  of the  County Recorder  of San Diego County, March 22, 1972.\n",
+            "Excepting therefrom  all minerals,  coals, oils, petroleum,  gas and other kindred  substances under  and in said land, but without \n",
+            "right of entry of the surface thereof, but with the right,  however, to drill in, through, or under  said land or to explore,  develop, \n",
+            "or take all minerals, coals, oils, petroleum,  gas and other kindred substances  in and from said laud, all such operations to be \n",
+            "conducted below a depth of five hundred (500) feet below the surface thereof.\n",
+            "Parcel No 2:\n",
+            "An easement  and right of way for open  space, general utility, access  and parking to be used in common with others, over,  \n",
+            "under, along and across those portions of Lots 56, 57, 58 and 59 of Villa Barbados  North Unit No. 1, in the City of San \n",
+            "Diego, County of San Diego, State of California,  according to Map thereof No. 7236, filed in the Office of the County \n",
+            "Recorder of  San Diego County, March 22, 1972, described as follows:\n",
+            "Beginning at the Southeast corner of said Lot 59; thence North 87°30'29\" West along the Southerly  line of said Lot, a \n",
+            "distance of 12.50 feet; thence North 2°29'31\"  East, 42.71 feet to the beginning of a tangent  curve, concave Southwesterly \n",
+            "having a radius of 13.50 feet; thence Northwesterly  along  the arc of said curve through a central  angle of 90°, a distance of \n",
+            "21.21 feet; thence North 2°29'31\" East, 48 feet; thence  South 87°30'29\" East,  52 feet; thence South 2°29'31\"  West, 48 feet to \n",
+            "a point at the beginning of a curve, concave Southeasterly whose radius bears  South 2°29'31\" West, 13.50 feet from said \n",
+            "point; thence Southwesterly along the arc of said curve through a central angle of 90°, a distance  of 21.21 feet; thence South \n",
+            "2°29'31\" West. 42.71 feet to the Southerly line of said Lot 56; thence North  87°30'29\" West along said Southerly line, 12.50 \n",
+            "feet to the Point of Beginning.\n",
+            "Excepting therefrom that  portion  included  within  Lot 58.\n",
+            "APN:  370-200-01\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pdfplumber\n",
+        "\n",
+        "with pdfplumber.open('sample_title_report.pdf') as pdf:\n",
+        "  print(len(pdf.pages))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "cIOlyZlUUpJr",
+        "outputId": "7f554587-d689-4573-b67d-54915e8060cf"
+      },
+      "execution_count": 13,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "30\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "with pdfplumber.open('sample_title_report.pdf')as pdf:\n",
+        "  page = pdf.pages[4]\n",
+        "  print(page.extract_text())"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "VDbZHIAHXC-i",
+        "outputId": "1fd7b35f-6b7f-4943-b857-474bd67c6325"
+      },
+      "execution_count": 19,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "PRELIMINARY REPORT Ticor Title Company of California\n",
+            "YOUR REFERENCE: First Street ORDER NO.: CYTEST-995-\n",
+            "EXCEPTIONS\n",
+            "(Continued)\n",
+            "9. Easement(s) for the purpose(s) shown below and rights incidental thereto as reserved in a document:\n",
+            "Reserved by: Community Builders, a California corporation\n",
+            "Purpose: open space, general utility, access and parking\n",
+            "Recording Date: September 19, 1972\n",
+            "Recording No: 249792, of Official Records\n",
+            "Affects: said land more particularly described therein\n",
+            "10. A deed of trust to secure an indebtedness in the amount shown below,\n",
+            "Amount: $305,000.00\n",
+            "Dated: June 2, 2006\n",
+            "Trustor/Grantor John J. Seller and Jane G. Seller, husband and wife as joint tenants\n",
+            "Trustee: Ticor Title Company\n",
+            "Beneficiary: Wells Fargo Bank, N.A.\n",
+            "Recording Date: June 15, 2006\n",
+            "Recording No: 2006-123867 of official records\n",
+            "11. A deed of trust to secure an indebtedness in the amount shown below,\n",
+            "Amount: $150,000.00\n",
+            "Dated: May 3, 2007\n",
+            "Trustor/Grantor: John J. Seller and Jane G. Seller, husband and wife as joint tenants\n",
+            "Trustee: American Securities Company\n",
+            "Beneficiary: Wells Fargo Bank, N.A.\n",
+            "Loan No.: 651-651-1597533-1998\n",
+            "Recording Date: June 5, 2007\n",
+            "Recording No: 2007-316852, of Official Records\n",
+            "The Deed of Trust set forth above is purported to be a \"Credit Line\" Deed of Trust. It is a requirement that the\n",
+            "Trustor/Grantor of said Deed of Trust provide written authorization to close said credit line account to the Lender\n",
+            "when the Deed of Trust is being paid off through the Company or other Settlement/Escrow Agent or provide a\n",
+            "satisfactory subordination of this Deed of Trust to the proposed Deed of Trust to be recorded at closing.\n",
+            "END OF ITEMS\n",
+            "CLTA Preliminary Report Form – Modified (11/17/06) Page 5\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "with pdfplumber.open('sample_title_report.pdf') as pdf:\n",
+        "  page = pdf.pages[12]\n",
+        "  tables = page.extract_tables()\n",
+        "  for table in tables:\n",
+        "      for row in table:\n",
+        "        print(row)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "JCMfurgEXwgI",
+        "outputId": "5203dfb0-82df-45f9-b02b-c7c7b0e85d4e"
+      },
+      "execution_count": 21,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "['To:', 'Ticor Title Company of California, 2878 Camino Del Rio South, Suite 500, San Diego, CA 92108']\n",
+            "['Date:', '']\n",
+            "['From:\\n(name)', '']\n",
+            "['Current Address:', '']\n",
+            "['', 'I believe that I am qualified for the $20.00 discount pursuant to the coordinated stipulated judgments\\nentered in actions filed by both the Attorney General and private class action plaintiffs. I have not\\npreviously received a cash payment or a discount from another Company on the property described\\nbelow:\\nSigned: Date:']\n",
+            "['Address of\\nqualifying\\nproperty:', '']\n",
+            "['Approximate date\\nof transaction', '']\n",
+            "['Escrow No.:', '']\n",
+            "['Escrow Officer:', '']\n",
+            "['Fax Number:', '']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import fitz\n",
+        "\n",
+        "doc = fitz.open('sample_title_report.pdf')\n",
+        "\n",
+        "print(doc.metadata)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "3JOnHgkubIpP",
+        "outputId": "1160d95e-a022-467a-f511-c54c141efb5b"
+      },
+      "execution_count": 24,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "{'format': 'PDF 1.5', 'title': 'Title Report', 'author': '06-13-2013 15:44:29', 'subject': 'CYTEST|lPrelm.DOC', 'keywords': '', 'creator': 'Microsoft Office Word', 'producer': 'Aspose.Words for .NET 11.3.0.0', 'creationDate': 'D:20130613224500Z', 'modDate': 'D:20130613224500Z', 'trapped': '', 'encryption': None}\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "page = doc[1]\n",
+        "print(page.get_text())"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "opnkRhFpaIWf",
+        "outputId": "f82cae11-c339-4390-ea78-3beab76ca4e0"
+      },
+      "execution_count": 26,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "2878 Camino Del Rio South, Suite 500\n",
+            "San Diego, CA 92108\n",
+            "Phone:  (619) 260-0015\n",
+            "Fax:  (619) 692-9465\n",
+            "CLTA Preliminary Report Form – Modified (11/17/06)\n",
+            "Page 2\n",
+            "PRELIMINARY REPORT\n",
+            "EFFECTIVE DATE:\n",
+            "June 13, 2013 at 7:30 a.m.\n",
+            "The form of policy or policies of title insurance contemplated by this report is:\n",
+            "ALTA Homeowners Policy (2-3-10)\n",
+            "ALTA Extended Loan Policy (6-17-06)\n",
+            "1.\n",
+            "THE ESTATE OR INTEREST IN THE LAND HEREINAFTER DESCRIBED OR REFERRED TO COVERED \n",
+            "BY THIS REPORT IS:\n",
+            "A fee as to parcel 1 and an easement as to parcel 2\n",
+            "2.\n",
+            "TITLE TO SAID ESTATE OR INTEREST AT THE DATE HEREOF IS VESTED IN:\n",
+            "John J. Seller and Jane G. Seller, husband and wife as joint tenants \n",
+            "3.\n",
+            "THE LAND REFERRED TO IN THIS REPORT IS DESCRIBED AS FOLLOWS:\n",
+            "See Exhibit A attached hereto and made a part hereof.\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "text_data = page.get_text(\"dict\")\n",
+        "\n",
+        "for block in text_data.get(\"blocks\", []):\n",
+        "    bbox = block[\"bbox\"]\n",
+        "\n",
+        "\n",
+        "    if \"lines\" in block:\n",
+        "        for line in block[\"lines\"]:\n",
+        "            for span in line.get(\"spans\", []):\n",
+        "                text = span[\"text\"]\n",
+        "                print(f\"Text: {text}, Bounding Box: {bbox}\")\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "u_07dfG_bfYT",
+        "outputId": "b3eb5599-e98c-48f3-c4ec-fe9923d404c7"
+      },
+      "execution_count": 27,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Text: 2878 Camino Del Rio South, Suite 500, Bounding Box: (401.052001953125, 36.42599868774414, 557.8919067382812, 47.49599838256836)\n",
+            "Text: San Diego, CA 92108, Bounding Box: (462.73199462890625, 47.92499923706055, 557.98193359375, 70.49400329589844)\n",
+            "Text: Phone:  (619) 260-0015, Bounding Box: (462.73199462890625, 47.92499923706055, 557.98193359375, 70.49400329589844)\n",
+            "Text: Fax:  (619) 692-9465, Bounding Box: (472.73199462890625, 70.92300415039062, 557.98193359375, 81.99300384521484)\n",
+            "Text: CLTA Preliminary Report Form – Modified (11/17/06), Bounding Box: (54.0, 746.0339965820312, 557.9830322265625, 755.9969482421875)\n",
+            "Text: Page 2, Bounding Box: (54.0, 746.0339965820312, 557.9830322265625, 755.9969482421875)\n",
+            "Text: PRELIMINARY REPORT, Bounding Box: (235.83099365234375, 94.0060043334961, 376.12103271484375, 107.29000854492188)\n",
+            "Text: EFFECTIVE DATE:, Bounding Box: (54.0, 138.22000122070312, 308.53997802734375, 149.29000854492188)\n",
+            "Text: June 13, 2013 at 7:30 a.m., Bounding Box: (54.0, 138.22000122070312, 308.53997802734375, 149.29000854492188)\n",
+            "Text: The form of policy or policies of title insurance contemplated by this report is:, Bounding Box: (54.0, 161.718994140625, 368.06298828125, 172.78900146484375)\n",
+            "Text: ALTA Homeowners Policy (2-3-10), Bounding Box: (90.0, 185.21798706054688, 255.0, 207.7869873046875)\n",
+            "Text: ALTA Extended Loan Policy (6-17-06), Bounding Box: (90.0, 185.21798706054688, 255.0, 207.7869873046875)\n",
+            "Text: 1., Bounding Box: (54.0, 231.71499633789062, 560.447021484375, 254.28399658203125)\n",
+            "Text: THE ESTATE OR INTEREST IN THE LAND HEREINAFTER DESCRIBED OR REFERRED TO COVERED , Bounding Box: (54.0, 231.71499633789062, 560.447021484375, 254.28399658203125)\n",
+            "Text: BY THIS REPORT IS:, Bounding Box: (54.0, 231.71499633789062, 560.447021484375, 254.28399658203125)\n",
+            "Text: A fee as to parcel 1 and an easement as to parcel 2, Bounding Box: (90.0, 266.2120056152344, 303.16998291015625, 277.2820129394531)\n",
+            "Text: 2., Bounding Box: (54.0, 300.708984375, 441.5530090332031, 311.77899169921875)\n",
+            "Text: TITLE TO SAID ESTATE OR INTEREST AT THE DATE HEREOF IS VESTED IN:, Bounding Box: (54.0, 300.708984375, 441.5530090332031, 311.77899169921875)\n",
+            "Text: John J. Seller and Jane G. Seller, husband and wife as joint tenants , Bounding Box: (90.0, 323.7070007324219, 379.3199768066406, 334.7770080566406)\n",
+            "Text: 3., Bounding Box: (54.0, 346.7049865722656, 424.9700012207031, 357.7749938964844)\n",
+            "Text: THE LAND REFERRED TO IN THIS REPORT IS DESCRIBED AS FOLLOWS:, Bounding Box: (54.0, 346.7049865722656, 424.9700012207031, 357.7749938964844)\n",
+            "Text: See Exhibit A attached hereto and made a part hereof., Bounding Box: (90.0, 370.2039794921875, 322.04998779296875, 381.27398681640625)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "pix = page.get_pixmap()\n",
+        "pix.save(\"page1.png\")"
+      ],
+      "metadata": {
+        "id": "HtwXnqtcbtjh"
+      },
+      "execution_count": 28,
+      "outputs": []
+    }
+  ]
+}
